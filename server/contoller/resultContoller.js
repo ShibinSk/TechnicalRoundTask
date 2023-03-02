@@ -37,8 +37,6 @@ exports.sumget = async (req, res) => {
   }
 };
 
-// parms mark
-// response rank
 exports.rangGet = async (req, res) => {
   try {
     console.log("params" + req.query.name);
