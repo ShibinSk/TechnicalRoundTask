@@ -39,20 +39,40 @@ exports.sumget = async (req, res) => {
 
 exports.rangGet = async (req, res) => {
   try {
-    console.log("params" + req.query.name);
-    const Sort = await db
+    console.log(req.query.mark);
+
+    const rank = await db
       .get()
       .collection(collection.STUDENTS)
       .find()
       .sort({ mark: -1 })
       .toArray();
-    console.log(Sort, "Sort");
 
-    let index = Sort.findIndex((student) => student.name === req.query.name);
-    console.log("rank ===" + index);
+    console.log(rank, "kkk");
+
+    let index = rank.findIndex(
+      (students) => students.mark === parseInt(req.query.mark)
+    );
+    console.log(index);
+
+    const names = await db
+      .get()
+      .collection(collection.STUDENTS)
+      .find({ mark: parseInt(req.query.mark) })
+      .toArray();
+
+    const name = names.map((object) => {
+      return object.name;
+    });
+
+    console.log(name);
+
     const data = {
-      message: `Rank of ${req.query.name} = ${++index}`,
+      message: `Rank of ${
+        req.query.mark
+      } = ${++index} , and name is = ${name}`,
     };
+
     res.send(data);
   } catch (err) {
     console.log(err);
